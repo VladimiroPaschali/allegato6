@@ -1,6 +1,6 @@
-# Foglio Capitaneria
+# Allegato 6
 
-L'applicazione, programmata usando Flutter, permette la creazione l'allegato 6 della capitaneria di porto.
+L'applicazione, programmata usando Flutter, permette la creazione l'allegato 6 della Guardia Costiera.
 
 <p float="left">
   <img src="PaginaPrincipale.jpg" width="250" />
