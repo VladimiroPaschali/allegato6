@@ -3,9 +3,9 @@
 L'applicazione, programmata usando Flutter, permette la creazione l'allegato 6 della capitaneria di porto.
 
 <p float="left">
-  <img src="PaginaPrincipale.jpg" width="100" />
-  <img src="Impostazioni.jpg" width="100" /> 
-  <img src="PDF.jpg" width="100" />
+  <img src="PaginaPrincipale.jpg" width="300" />
+  <img src="Impostazioni.jpg" width="300" /> 
+  <img src="PDF.jpg" width="300" />
 </p>
 
 Premendo i "tre pallini" si accede alle impostazioni dove è possibile modificare i dati che verranno visualizzati nella pagina iniziale e che verranno inseriti nel pdf.
