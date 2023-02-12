@@ -40,9 +40,9 @@ dependencies:
   flutter_html_to_pdf: ^0.7.0
   path_provider: ^2.0.12
   font_awesome_flutter: ^10.3.0
-  open_file: ^3.2.1
   flex_color_scheme: ^6.1.2
   flutter_launcher_icons: ^0.11.0
+  open_file_plus: ^3.4.0
 
 dev_dependencies:
   flutter_test:
