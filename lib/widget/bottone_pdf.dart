@@ -15,6 +15,14 @@ class BottonePDF extends StatefulWidget {
 
 class _BottonePDFState extends State<BottonePDF> {
 
+  @override
+  void initState() {
+    super.initState();
+    UserChoiche.setOrarioCompilazione(UserChoiche.getOrarioCompilazione());
+    //print("cccccccccccccc"+UserChoiche.getOrarioCompilazione());
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +48,24 @@ class _BottonePDFState extends State<BottonePDF> {
   //controlla campi mancanti
   List<String> valida() {
     List<String> mancanti = [];
+
+    if (UserChoiche.getOrarioCompilazione()==""){
+      DateTime compilazione = DateTime.now();
+      final oracompilazione = compilazione.hour.toString().padLeft(2,"0");
+      final minuticompilazione = compilazione.minute.toString().padLeft(2,"0");
+      final orarioCompilazione = oracompilazione+":"+minuticompilazione;
+      UserChoiche.setOrarioCompilazione(orarioCompilazione);
+
+    }
+
+    if (UserChoiche.getOrarioImmersione()==""){
+      DateTime immersione = DateTime.now();
+      final oraimmersione = immersione.hour.toString().padLeft(2,"0");
+      final minutiimmersione = immersione.minute.toString().padLeft(2,"0");
+      final orarioImmersione = oraimmersione+":"+minutiimmersione;
+      UserChoiche.setOrarioImmersione(orarioImmersione);
+    }
+
 
     if (UserSettings.getSocieta() == ""){
       mancanti.add("Società");
@@ -74,10 +100,8 @@ class _BottonePDFState extends State<BottonePDF> {
         UserChoiche.getDataCompilazione(),
         UserChoiche.getOrarioCompilazione()
     );
-    print(pdfFile.path);
-    final result = await OpenFile.open(pdfFile.path);
+    await OpenFile.open(pdfFile.path);
     setState(() {
-      print("type=${result.type}  message=${result.message}");
     });
 
   }

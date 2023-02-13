@@ -1,5 +1,4 @@
 import 'package:allegato6/shared_preferences/user_choice.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -24,14 +23,14 @@ class _DataWidgetState extends State<DataWidget> {
     final minutiimmersione = immersione.minute.toString().padLeft(2,"0");
     final oracompilazione = compilazione.hour.toString().padLeft(2,"0");
     final minuticompilazione = compilazione.minute.toString().padLeft(2,"0");
-    final orarioImmersione = oraimmersione+":"+minutiimmersione;
-    final orarioCompilazione = oracompilazione+":"+minuticompilazione;
+    final orarioImmersione = "$oraimmersione:$minutiimmersione";
+    final orarioCompilazione = "$oracompilazione:$minuticompilazione";
     final giornoImmersione = immersione.day.toString().padLeft(2,"0");
     final meseImmersione = immersione.month.toString().padLeft(2,"0");
     final giornoCompilazione = compilazione.day.toString().padLeft(2,"0");
     final meseCompilazione = compilazione.month.toString().padLeft(2,"0");
-    final dataImmersione = "${giornoImmersione}/${meseImmersione}/${immersione.year}";
-    final dataCompilazione = "${giornoCompilazione}/${meseCompilazione}/${compilazione.year}";
+    final dataImmersione = "$giornoImmersione/$meseImmersione/${immersione.year}";
+    final dataCompilazione = "$giornoCompilazione/$meseCompilazione/${compilazione.year}";
 
     UserChoiche.setOrarioImmersione(orarioImmersione);
     UserChoiche.setOrarioCompilazione(orarioCompilazione);
