@@ -17,25 +17,9 @@ class _DataWidgetState extends State<DataWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-    //ora e minuti con 0 a sinistra se hanno una sola cifra
-    final oraimmersione = immersione.hour.toString().padLeft(2,"0");
-    final minutiimmersione = immersione.minute.toString().padLeft(2,"0");
-    final oracompilazione = compilazione.hour.toString().padLeft(2,"0");
-    final minuticompilazione = compilazione.minute.toString().padLeft(2,"0");
-    final orarioImmersione = "$oraimmersione:$minutiimmersione";
-    final orarioCompilazione = "$oracompilazione:$minuticompilazione";
-    final giornoImmersione = immersione.day.toString().padLeft(2,"0");
-    final meseImmersione = immersione.month.toString().padLeft(2,"0");
-    final giornoCompilazione = compilazione.day.toString().padLeft(2,"0");
-    final meseCompilazione = compilazione.month.toString().padLeft(2,"0");
-    final dataImmersione = "$giornoImmersione/$meseImmersione/${immersione.year}";
-    final dataCompilazione = "$giornoCompilazione/$meseCompilazione/${compilazione.year}";
-
-    UserChoiche.setOrarioImmersione(orarioImmersione);
-    UserChoiche.setOrarioCompilazione(orarioCompilazione);
-    UserChoiche.setDataImmersione(dataImmersione);
-    UserChoiche.setDataCompilazione(dataCompilazione);
+    //inizializza immersione e compilazione
+    salva(immersione,true);
+    salva(compilazione,false);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 5, 8, 0),
@@ -52,14 +36,20 @@ class _DataWidgetState extends State<DataWidget> {
                   size: 22,
                 ),
                 const Text(
-                  "  Ora e data immersione: ",
+                  " Ora e data immersione: ",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                Text(UserChoiche.getDataImmersione()+" "+ UserChoiche.getOrarioImmersione()),
-
+                Text(
+                  UserChoiche.getDataImmersione()+" "+ UserChoiche.getOrarioImmersione(),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    letterSpacing: -0.2,
+                    wordSpacing: -0.2,
+                  ),
+                ),
               ],
             ),
           ),
@@ -73,9 +63,10 @@ class _DataWidgetState extends State<DataWidget> {
                 onPressed: () async{
                   final nuovadataimmersione = await pickDate();
                   if(nuovadataimmersione == null) return; //premuto cancel
-
+                  //imposta data immersione
                   setState(() {
                     immersione = DateTime(nuovadataimmersione.year,nuovadataimmersione.month,nuovadataimmersione.day,immersione.hour,immersione.minute);
+                    salva(immersione, true);
                   });
                 },
                 child: Text("Data")),
@@ -84,17 +75,20 @@ class _DataWidgetState extends State<DataWidget> {
                   onPressed: () async{
                     final nuovaoraimmersione = await pickTime();
                     if(nuovaoraimmersione == null) return; //premuto cancel
-
+                    //Imposta ora immersione
                     setState(() {
                       immersione = DateTime(immersione.year,immersione.month,immersione.day,nuovaoraimmersione.hour,nuovaoraimmersione.minute);
+                      salva(immersione, true);
                     });
                   },
                   child: Text("Ora")),
               //aggiorna l'orario d'immersione con l'ora attuale
               ElevatedButton(
                   onPressed: () {
+                    //aggiorna oradata attuali immersione
                     setState(() {
                       immersione = DateTime.now();
+                      salva(immersione, true);
                     });
                   },
                   child: Text("Ora attuale")),
@@ -108,18 +102,22 @@ class _DataWidgetState extends State<DataWidget> {
                   FontAwesomeIcons.pencil,
                   color: Theme.of(context).colorScheme.primary,
                   size: 22,
-
-
                 ),
                 const Text(
-                  "  Ora e data compilazione: ",
+                  " Ora e data compilazione: ",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                Text(UserChoiche.getDataCompilazione()+" "+ UserChoiche.getOrarioCompilazione()),
-
+                Text(
+                  UserChoiche.getDataCompilazione()+" "+ UserChoiche.getOrarioCompilazione(),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    letterSpacing: -0.2,
+                    wordSpacing: -0.2,
+                  ),
+                ),
               ],
             ),
           ),
@@ -133,9 +131,10 @@ class _DataWidgetState extends State<DataWidget> {
                   onPressed: () async{
                     final nuovadatacompilazione = await pickDate();
                     if(nuovadatacompilazione == null) return;
-
+                    //imposta data compilazione
                     setState(() {
                       compilazione = DateTime(nuovadatacompilazione.year,nuovadatacompilazione.month,nuovadatacompilazione.day,compilazione.hour,compilazione.minute);
+                      salva(compilazione, false);
                     });
                   },
                   child: Text("Data")),
@@ -144,17 +143,20 @@ class _DataWidgetState extends State<DataWidget> {
                   onPressed: () async{
                     final nuovaoracompilazione = await pickTime();
                     if(nuovaoracompilazione == null) return; //premuto cancel
-
+                    //Imposta ora compilazione
                     setState(() {
                       compilazione = DateTime(compilazione.year,compilazione.month,compilazione.day,nuovaoracompilazione.hour,nuovaoracompilazione.minute);
+                      salva(compilazione, false);
                     });
                   },
                   child: Text("Ora")),
               //aggiorna l'orario di compilaizone con l'ora attuale
               ElevatedButton(
                   onPressed: () {
+                    //aggiorna oradata compilazione
                     setState(() {
                       compilazione = DateTime.now();
+                      salva(compilazione, false);
                     });
                   },
                   child: Text("Ora attuale")),
@@ -164,6 +166,7 @@ class _DataWidgetState extends State<DataWidget> {
       ),
     );
   }
+
   //apre il datepicker
   Future<DateTime?> pickDate() => showDatePicker(
     context: context,
@@ -178,6 +181,25 @@ class _DataWidgetState extends State<DataWidget> {
       return MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: childWidget!);
     }
-
   );
+
+  //salva le stringhe ora e data nelle sharedpreferences
+  void salva(DateTime dataOra,bool immersione){
+    var ora = dataOra.hour.toString().padLeft(2,"0");
+    var minuti = dataOra.minute.toString().padLeft(2,"0");
+    var orario = "$ora:$minuti";
+    var giorno = dataOra.day.toString().padLeft(2,"0");
+    var mese = dataOra.month.toString().padLeft(2,"0");
+    var data = "$giorno/$mese/${dataOra.year}";
+    if(immersione){
+      UserChoiche.setOrarioImmersione(orario);
+      UserChoiche.setDataImmersione(data);
+    }else{
+      UserChoiche.setOrarioCompilazione(orario);
+      UserChoiche.setDataCompilazione(data);
+    }
+    //print(orario);
+    //print(UserChoiche.getOrarioImmersione());
+  }
+
 }

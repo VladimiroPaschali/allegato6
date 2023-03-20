@@ -200,10 +200,13 @@ div.WordSection1
 """;
 
     //Directory appDocDir = await getApplicationDocumentsDirectory();
-    Directory appDocDir = await getTemporaryDirectory();
+    Directory dir = await getTemporaryDirectory();
+    dir.deleteSync(recursive: true);
+    dir.create();
 
-    final targetPath = appDocDir.path;
-    const targetFileName = "Allegato6";
+    final targetPath = dir.path;
+    print(targetPath);
+     var targetFileName = "Allegato6${DateTime.now()}";
 
     final generatedPdfFile = await FlutterHtmlToPdf.convertFromHtmlContent(htmlContent, targetPath, targetFileName);
     return generatedPdfFile;

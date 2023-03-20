@@ -4,6 +4,7 @@ import 'package:allegato6/shared_preferences/user_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_file_plus/open_file_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../theme.dart';
 
 class BottonePDF extends StatefulWidget {
@@ -19,7 +20,6 @@ class _BottonePDFState extends State<BottonePDF> {
   void initState() {
     super.initState();
     UserChoiche.setOrarioCompilazione(UserChoiche.getOrarioCompilazione());
-    //print("cccccccccccccc"+UserChoiche.getOrarioCompilazione());
 
   }
 
@@ -66,8 +66,7 @@ class _BottonePDFState extends State<BottonePDF> {
       UserChoiche.setOrarioImmersione(orarioImmersione);
     }
 
-
-    if (UserSettings.getSocieta() == ""){
+    if (UserSettings.getSocieta()== null||UserSettings.getSocieta() == ""){
       mancanti.add("Società");
     }
 
@@ -88,7 +87,10 @@ class _BottonePDFState extends State<BottonePDF> {
   }
   //crea pdf
   void pdf() async {
-
+    //print(UserChoiche.getOrarioImmersione());
+    //final prefs = await SharedPreferences.getInstance();
+    //await prefs.reload();
+    //print(UserChoiche.getOrarioImmersione());
     final pdfFile = await HtmlConverter.generate(
         UserSettings.getSocieta(),
         UserChoiche.getOrarioImmersione(),
